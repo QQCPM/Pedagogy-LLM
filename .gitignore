@@ -1,0 +1,48 @@
+# Model files and cache directories
+models/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.venv/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# Output files
+outputs/
+*.out
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Large data files
+*.bin
+*.safetensors
+*.gguf
+*.pt
+*.pth
+
+# Ollama and other model artifacts
+*.incomplete
