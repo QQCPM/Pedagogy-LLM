@@ -90,7 +90,8 @@ class OllamaEducationalInference:
                          temperature: float = None,
                          adaptive_format: bool = True,
                          include_knowledge_gap_context: bool = True,
-                         use_advanced_templates: bool = True) -> str:
+                         use_advanced_templates: bool = True,
+                         complexity_override: str = None) -> str:
         """Generate adaptive educational response using Ollama"""
         
         # Enhanced RAG for Llama, lightweight for others
@@ -127,7 +128,19 @@ class OllamaEducationalInference:
         if adaptive_format:
             if use_advanced_templates:
                 # Use new adaptive template system
-                base_prompt = self.adaptive_templates.create_prompt(question)
+                if complexity_override:
+                    # Override complexity in the question for template analysis
+                    complexity_indicators = {
+                        'simple': 'brief simple',
+                        'detailed': 'detailed comprehensive thorough'
+                    }
+                    modified_question = question
+                    if complexity_override in complexity_indicators:
+                        modified_question = f"{question} {complexity_indicators[complexity_override]}"
+                    base_prompt = self.adaptive_templates.create_prompt(modified_question)
+                else:
+                    base_prompt = self.adaptive_templates.create_prompt(question)
+                
                 # Add knowledge context if available
                 if known_concepts:
                     knowledge_context = f"\n\nBackground: User is already familiar with: {', '.join(known_concepts)}. Focus on new aspects and avoid redundant explanations of these concepts."

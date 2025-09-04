@@ -24,11 +24,22 @@ FOLDERS = {
     "5": "General"
 }
 
-# Available models for selection
+# Available models for selection (streamlined to 2 models)
 AVAILABLE_MODELS = {
-    "1": {"name": "Gemma 3 12B", "model_id": "gemma3:12b", "description": "Large, high-quality responses"},
-    "2": {"name": "Llama 3.1 8B", "model_id": "llama3.1:8b", "description": "Fast, efficient responses"},
-    "3": {"name": "Gemma 2 9B", "model_id": "gemma2:9b", "description": "Balanced performance"} 
+    "1": {"name": "Gemma 3 12B", "model_id": "gemma3:12b", "description": "Your preferred model"},
+    "2": {"name": "Llama 3.1 8B", "model_id": "llama3.1:8b", "description": "Alternative perspective"}
+}
+
+# Default model for --default flag
+DEFAULT_MODEL = "gemma3:12b"
+
+# Folder shortcuts mapping
+FOLDER_SHORTCUTS = {
+    "--math": "Mathematics",
+    "--ai": "AI-ML",
+    "--physics": "Physics", 
+    "--cs": "Computer-Science",
+    "--general": "General"
 }
 
 def check_ollama_connection():
@@ -47,25 +58,56 @@ def choose_model():
         print(f"  {key}. {model_info['name']} - {model_info['description']}")
     
     while True:
-        choice = input("\nSelect model (1-3): ").strip()
+        choice = input("\nSelect model (1-2): ").strip()
         if choice in AVAILABLE_MODELS:
             return AVAILABLE_MODELS[choice]['model_id']
-        print("Please enter 1, 2, or 3")
+        print("Please enter 1 or 2")
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python ask.py 'Your question here' [--no-kb] [--compare]")
-        print("Example: python ask.py 'Explain eigenvalues and eigenvectors'")
-        print("Options:")
-        print("  --no-kb    Disable knowledge base integration for this question")
-        print("  --compare  Compare responses from Gemma 3 and Llama 3.1")
+        print("Usage: python ask.py 'Your question here' [OPTIONS]")
+        print("Example: python ask.py 'Explain eigenvalues' --quick --math")
+        print("")
+        print("Core Options:")
+        print("  --default   Use Gemma 3 without model selection")
+        print("  --raw       Raw Gemma 3 (no educational formatting)")
+        print("  --compare   Compare both models → choose preferred → save")
+        print("  --no-kb     Disable knowledge base (but keep educational formatting)")
+        print("")
+        print("Workflow Options:")
+        print("  --quick     Skip feedback loop, auto-save to Obsidian")
+        print("  --no-save   Don't save anywhere (quick questions)")
+        print("  --brief     Force brief, focused answers")
+        print("  --detailed  Force comprehensive explanations")
+        print("")
+        print("Folder Shortcuts (auto-save to Obsidian):")
+        print("  --math      Save to Mathematics folder")
+        print("  --ai        Save to AI-ML folder")
+        print("  --physics   Save to Physics folder")
+        print("  --cs        Save to Computer-Science folder")
+        print("  --general   Save to General folder")
+        print("")
+        print("Examples:")
+        print("  python ask.py 'Explain eigenvalues' --quick --math")
+        print("  python ask.py 'Compare ML algorithms' --compare --ai")
+        print("  python ask.py 'Raw test' --raw --no-save")
         return
 
     # Parse command line arguments
     args = sys.argv[1:]
+    
+    # Initialize flags
     compare_mode = False
     use_kb = True
+    default_model = False
+    raw_mode = False
+    quick_mode = False
+    no_save = False
+    force_brief = False
+    force_detailed = False
+    folder_shortcut = None
     
+    # Parse all flags
     if '--compare' in args:
         compare_mode = True
         args.remove('--compare')
@@ -74,6 +116,58 @@ def main():
         use_kb = False
         args.remove('--no-kb')
         print("📚 Knowledge base disabled for this session")
+    
+    if '--default' in args:
+        default_model = True
+        args.remove('--default')
+        print("🎯 Using default model (Gemma 3)")
+    
+    if '--raw' in args:
+        raw_mode = True
+        default_model = True  # Raw mode implies Gemma 3
+        args.remove('--raw')
+        print("🔥 Raw mode: Pure Gemma 3, no educational formatting")
+    
+    if '--quick' in args:
+        quick_mode = True
+        args.remove('--quick')
+        print("⚡ Quick mode: Auto-save, no feedback loop")
+    
+    if '--no-save' in args:
+        no_save = True
+        args.remove('--no-save')
+        print("🚫 No-save mode: Won't save response")
+    
+    if '--brief' in args:
+        force_brief = True
+        args.remove('--brief')
+        print("📝 Brief mode: Short, focused answers")
+    
+    if '--detailed' in args:
+        force_detailed = True
+        args.remove('--detailed')
+        print("📚 Detailed mode: Comprehensive explanations")
+    
+    # Check for folder shortcuts
+    for shortcut, folder_name in FOLDER_SHORTCUTS.items():
+        if shortcut in args:
+            folder_shortcut = folder_name
+            args.remove(shortcut)
+            print(f"📁 Auto-save to {folder_name} folder")
+            break
+    
+    # Validation: conflicting flags
+    if raw_mode and compare_mode:
+        print("❌ Error: --raw and --compare cannot be used together")
+        return
+    
+    if force_brief and force_detailed:
+        print("❌ Error: --brief and --detailed cannot be used together")
+        return
+    
+    if quick_mode and no_save:
+        print("❌ Error: --quick and --no-save cannot be used together")
+        return
     
     question = " ".join(args)
     session_id = str(uuid.uuid4())[:8]  # Short session ID for tracking
@@ -84,10 +178,18 @@ def main():
         print("💡 Start it with: ollama serve")
         return
     
+    # Model selection logic
+    selected_model = None
     if compare_mode:
         print(f"⚔️ Model Comparison Mode: Gemma 3 vs Llama 3.1")
+    elif default_model or raw_mode:
+        selected_model = DEFAULT_MODEL
+        if raw_mode:
+            print(f"🔥 Raw mode with {selected_model}")
+        else:
+            print(f"🎯 Default model: {selected_model}")
     else:
-        # Interactive model selection for single model mode
+        # Interactive model selection
         selected_model = choose_model()
         print(f"🤖 Selected model: {selected_model}")
     
@@ -121,10 +223,12 @@ def main():
     
     if compare_mode:
         # Model comparison workflow
-        run_model_comparison(question, session_id, gemma_inference, llama_inference, use_kb)
+        run_model_comparison(question, session_id, gemma_inference, llama_inference, use_kb, 
+                           folder_shortcut, quick_mode)
     else:
         # Single model interaction loop
-        run_single_model_interaction(question, session_id, inference)
+        run_single_model_interaction(question, session_id, inference, raw_mode, quick_mode, 
+                                   no_save, force_brief, force_detailed, folder_shortcut)
 
 def collect_feedback(question, response, attempt):
     """Collect comprehensive feedback from user"""
@@ -265,6 +369,42 @@ def save_interaction_data(session_id, question, response, feedback, attempt):
         with open(training_file, 'a', encoding='utf-8') as f:
             f.write(json.dumps(training_data, ensure_ascii=False) + '\n')
 
+def save_to_obsidian_direct(question, response, folder_name, feedback=None, model_name=None):
+    """Direct save to Obsidian vault with specified folder (no interaction)"""
+    
+    # Check vault exists
+    if not OBSIDIAN_VAULT.exists():
+        print(f"❌ Obsidian vault not found at: {OBSIDIAN_VAULT}")
+        print("💡 Update OBSIDIAN_VAULT path at top of script")
+        return
+    
+    # Create folder if it doesn't exist
+    folder_path = OBSIDIAN_VAULT / folder_name
+    folder_path.mkdir(parents=True, exist_ok=True)
+    
+    # Generate filename
+    # Clean question for filename (first 40 chars, safe characters only)
+    safe_question = "".join(c for c in question if c.isalnum() or c in (' ', '-', '_')).strip()
+    safe_question = safe_question.replace(' ', '_')[:40]
+    
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    filename = f"{date_str}_{safe_question}.md"
+    
+    # Create note content with proper metadata and feedback
+    content = create_note_content(question, response, folder_name, feedback, model_name)
+    
+    # Save file
+    filepath = folder_path / filename
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(content)
+        
+        print(f"✅ Saved to: {folder_name}/{filename}")
+        print(f"📁 Full path: {filepath}")
+        
+    except Exception as e:
+        print(f"❌ Error saving file: {e}")
+
 def save_to_obsidian(question, response, feedback=None, model_name=None):
     """Interactive save to Obsidian vault"""
     
@@ -380,8 +520,9 @@ def create_note_content(question, response, folder, feedback=None, model_source=
     
     return content
 
-def run_model_comparison(question, session_id, gemma_inference, llama_inference, use_kb):
-    """Run sequential model comparison workflow"""
+def run_model_comparison(question, session_id, gemma_inference, llama_inference, use_kb, 
+                        folder_shortcut=None, quick_mode=False):
+    """Run sequential model comparison workflow with new options"""
     
     models = [
         ("Gemma 3 12B", gemma_inference, "gemma3:12b"),
@@ -472,10 +613,17 @@ def run_model_comparison(question, session_id, gemma_inference, llama_inference,
             
             # Get the model name for metadata
             preferred_model = responses[preferred_idx]['model_name']
-            save_to_obsidian(question, preferred_response, comparison_feedback, preferred_model)
+            
+            # Use folder shortcut if available, otherwise interactive save
+            if folder_shortcut:
+                save_to_obsidian_direct(question, preferred_response, folder_shortcut, 
+                                      comparison_feedback, preferred_model)
+            else:
+                save_to_obsidian(question, preferred_response, comparison_feedback, preferred_model)
 
-def run_single_model_interaction(question, session_id, inference):
-    """Run single model interaction loop"""
+def run_single_model_interaction(question, session_id, inference, raw_mode=False, quick_mode=False, 
+                                 no_save=False, force_brief=False, force_detailed=False, folder_shortcut=None):
+    """Run single model interaction loop with new workflow options"""
     attempt = 1
     feedback_history = []
     
@@ -483,7 +631,29 @@ def run_single_model_interaction(question, session_id, inference):
         print(f"\n⏳ Generating response (attempt {attempt})...")
         
         try:
-            result = inference.generate_response(question, include_knowledge_gap_context=True)
+            # Prepare generation parameters based on flags
+            adaptive_format = not raw_mode  # Raw mode disables educational formatting
+            
+            # Set complexity preference
+            complexity_override = None
+            if force_brief:
+                complexity_override = 'simple'
+            elif force_detailed:
+                complexity_override = 'detailed'
+            
+            # Generate response with appropriate settings
+            if raw_mode:
+                # Raw mode: minimal parameters, no educational formatting
+                result = inference.generate_response(question, 
+                                                   adaptive_format=False,
+                                                   include_knowledge_gap_context=False,
+                                                   use_advanced_templates=False)
+            else:
+                # Normal educational mode
+                result = inference.generate_response(question, 
+                                                   adaptive_format=adaptive_format,
+                                                   include_knowledge_gap_context=True,
+                                                   complexity_override=complexity_override)
             
             if isinstance(result, dict):
                 response = result.get('response', '')
@@ -511,26 +681,47 @@ def run_single_model_interaction(question, session_id, inference):
         print(response)
         print("="*80)
         
-        # Enhanced feedback collection
-        feedback = collect_feedback(question, response, attempt)
-        feedback_history.append(feedback)
-        
-        # Save interaction data
-        save_interaction_data(session_id, question, response, feedback, attempt)
-        
-        # Handle user choices
-        if feedback['action'] == 'save':
-            save_to_obsidian(question, response, feedback)
+        # Handle workflow modes
+        if no_save:
+            # No-save mode: just display and exit
+            print("🚫 No-save mode: Response complete, not saving")
             break
-        elif feedback['action'] == 'regenerate':
-            # Add feedback context for next generation
-            print(f"\n🔄 Regenerating with your feedback...")
-            question = enhance_question_with_feedback(question, feedback)
-            attempt += 1
-            continue
-        elif feedback['action'] == 'exit':
-            print("👋 Session ended")
+        elif quick_mode:
+            # Quick mode: auto-save without feedback
+            print("⚡ Quick mode: Auto-saving...")
+            if folder_shortcut:
+                # Use folder shortcut
+                save_to_obsidian_direct(question, response, folder_shortcut)
+            else:
+                # Use default General folder
+                save_to_obsidian_direct(question, response, "General")
             break
+        else:
+            # Normal interactive mode
+            feedback = collect_feedback(question, response, attempt)
+            feedback_history.append(feedback)
+            
+            # Save interaction data
+            save_interaction_data(session_id, question, response, feedback, attempt)
+            
+            # Handle user choices
+            if feedback['action'] == 'save':
+                if folder_shortcut:
+                    # Use folder shortcut, skip folder selection
+                    save_to_obsidian_direct(question, response, folder_shortcut, feedback)
+                else:
+                    # Normal interactive save
+                    save_to_obsidian(question, response, feedback)
+                break
+            elif feedback['action'] == 'regenerate':
+                # Add feedback context for next generation
+                print(f"\n🔄 Regenerating with your feedback...")
+                question = enhance_question_with_feedback(question, feedback)
+                attempt += 1
+                continue
+            elif feedback['action'] == 'exit':
+                print("👋 Session ended")
+                break
 
 def collect_comparison_feedback(responses):
     """Collect feedback for model comparison"""

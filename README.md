@@ -7,34 +7,41 @@
 1. **Setup Environment**:
 ```bash
 pip install -r requirements.txt
-python setup.py
+# Ensure Ollama is running: ollama serve
 ```
 
-2. **Run Baseline Evaluation**:
+2. **Basic Usage**:
 ```bash
-python gemma_inference.py  # Test model inference
-python evaluation_framework.py  # Create evaluation dataset
+# Interactive mode (choose model each time)
+python ask.py "Your question here"
+
+# Quick workflow examples  
+python ask.py "Explain eigenvalues" --quick --math
+python ask.py "Compare ML algorithms" --compare --ai
+python ask.py "Raw Gemma test" --raw --no-save
 ```
 
-3. **Monitor System**:
+3. **Advanced Usage** (See CLI_IMPROVEMENTS.md for full spec):
 ```bash
-python monitor.py  # Check GPU/memory status
+python ask.py "question" --no-kb     # No knowledge base
+python ask.py "question" --compare   # Compare both models  
+python ask.py "question" --detailed  # Comprehensive answers
 ```
 
 ## Project Structure
 
 ```
-├── config.py                 # Project configuration
-├── gemma_inference.py         # Model inference with memory optimization
-├── evaluation_framework.py    # Evaluation tools and metrics
-├── data_utils.py             # Data processing utilities
-├── monitor.py                # System monitoring
-├── setup.py                  # Automated setup
-├── requirements.txt          # Dependencies
-├── data/                     # Datasets and responses
-├── outputs/                  # Results and reports
-├── logs/                     # System logs
-└── models/                   # Model cache
+├── ask.py                     # Main CLI interface  
+├── config.py                  # Project configuration
+├── ollama_inference.py        # Ollama inference engine with Obsidian LaTeX
+├── smart_knowledge_base.py    # RAG system with concept graphs
+├── adaptive_templates.py      # Dynamic response formatting
+├── concept_flowchart.py       # Concept visualization
+├── obsidian_knowledge_base.py # Base knowledge system
+├── requirements.txt           # Dependencies
+├── CLI_IMPROVEMENTS.md        # Workflow optimization specs
+├── OBSIDIAN_WORKFLOW.md       # Obsidian integration guide
+└── data/                      # Interaction logs and knowledge index
 ```
 
 ## Phase 1: Foundation (Current)
