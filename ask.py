@@ -24,6 +24,34 @@ FOLDERS = {
     "5": "General"
 }
 
+# Available models for selection
+AVAILABLE_MODELS = {
+    "1": {"name": "Gemma 3 12B", "model_id": "gemma3:12b", "description": "Large, high-quality responses"},
+    "2": {"name": "Llama 3.1 8B", "model_id": "llama3.1:8b", "description": "Fast, efficient responses"},
+    "3": {"name": "Gemma 2 9B", "model_id": "gemma2:9b", "description": "Balanced performance"} 
+}
+
+def check_ollama_connection():
+    """Check if Ollama server is running"""
+    try:
+        import requests
+        response = requests.get("http://localhost:11434/api/tags", timeout=2)
+        return response.status_code == 200
+    except:
+        return False
+
+def choose_model():
+    """Interactive model selection"""
+    print("\n🤖 Choose your model:")
+    for key, model_info in AVAILABLE_MODELS.items():
+        print(f"  {key}. {model_info['name']} - {model_info['description']}")
+    
+    while True:
+        choice = input("\nSelect model (1-3): ").strip()
+        if choice in AVAILABLE_MODELS:
+            return AVAILABLE_MODELS[choice]['model_id']
+        print("Please enter 1, 2, or 3")
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python ask.py 'Your question here' [--no-kb] [--compare]")
@@ -50,8 +78,19 @@ def main():
     question = " ".join(args)
     session_id = str(uuid.uuid4())[:8]  # Short session ID for tracking
     
+    # Check Ollama connection first
+    if not check_ollama_connection():
+        print("❌ Ollama server is not running!")
+        print("💡 Start it with: ollama serve")
+        return
+    
     if compare_mode:
         print(f"⚔️ Model Comparison Mode: Gemma 3 vs Llama 3.1")
+    else:
+        # Interactive model selection for single model mode
+        selected_model = choose_model()
+        print(f"🤖 Selected model: {selected_model}")
+    
     print(f"🧠 Asking: {question}")
     print(f"📋 Session: {session_id}")
     
@@ -70,8 +109,9 @@ def main():
                 use_knowledge_base=use_kb
             )
         else:
-            # Single model mode (default Gemma 3)
+            # Single model mode with user selection
             inference = OllamaEducationalInference(
+                model_name=selected_model,
                 vault_path=str(OBSIDIAN_VAULT),
                 use_knowledge_base=use_kb
             )

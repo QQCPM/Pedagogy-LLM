@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "question": "Tell me history of the Earth",
+    "domain": "earth_science"
+  },
+  {
+    "id": 2,
+    "question": "I wanna build a causality model for scientific discovery, what I need to prepare for the knowledge",
+    "domain": "scientific_method"
+  },
+  {
+    "id": 3,
+    "question": "I wanna learn about the technology of hydrogel, its architecture, its potential research path",
+    "domain": "materials_science"
+  },
+  {
+    "id": 4,
+    "question": "I wanna learn about quantum computing, are they using a lot of math, AI,...",
+    "domain": "quantum_computing"
+  },
+  {
+    "id": 5,
+    "question": "Teach me step by step, so easy to understand the concept of numerical computation",
+    "domain": "numerical_methods"
+  },
+  {
+    "id": 6,
+    "question": "whats the no free lunch theorem, im not too familiar with the advanced concepts of AI, can u tech me so detailed",
+    "domain": "machine_learning"
+  },
+  {
+    "id": 7,
+    "question": "How to apply the optimization method to Neural Network",
+    "domain": "deep_learning"
+  },
+  {
+    "id": 8,
+    "question": "Tell me the progress of going to Mars, its potential, its challenges, Why we are going to Mars",
+    "domain": "space_exploration"
+  },
+  {
+    "id": 9,
+    "question": "Are there any plans of humans to going to space",
+    "domain": "space_exploration"
+  },
+  {
+    "id": 10,
+    "question": "Tell me some kind of civilization levels",
+    "domain": "futurism"
+  },
+  {
+    "id": 11,
+    "question": "How does Multivariable Calculus enable a model to learn?",
+    "domain": "math"
+  },
+  {
+    "id": 12,
+    "question": "What is the role of Information Theory in measuring model performance?",
+    "domain": "math"
+  }
+]

@@ -10,6 +10,7 @@ from typing import List, Dict, Optional
 from config import config
 from smart_knowledge_base import SmartKnowledgeBase
 from concept_flowchart import ConceptFlowchartGenerator
+from adaptive_templates import AdaptiveTemplateEngine
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -47,7 +48,10 @@ class OllamaEducationalInference:
         # Test connection
         self._test_connection()
         
-        # Question analysis patterns for adaptive responses
+        # Initialize adaptive template engine
+        self.adaptive_templates = AdaptiveTemplateEngine()
+        
+        # Legacy question analysis patterns (kept for backward compatibility)
         self.question_patterns = {
             'comparison': ['compare', 'vs', 'versus', 'difference between', 'contrast'],
             'summary': ['summarize', 'overview', 'what is', 'explain briefly', 'in short'],
@@ -85,35 +89,71 @@ class OllamaEducationalInference:
                          max_tokens: int = None,
                          temperature: float = None,
                          adaptive_format: bool = True,
-                         include_knowledge_gap_context: bool = True) -> str:
+                         include_knowledge_gap_context: bool = True,
+                         use_advanced_templates: bool = True) -> str:
         """Generate adaptive educational response using Ollama"""
         
-        # Lightweight RAG: Only check for knowledge gaps, not heavy context injection
+        # Enhanced RAG for Llama, lightweight for others
         known_concepts = []
         if include_knowledge_gap_context and self.knowledge_base:
             try:
-                # Quick check for what user already knows
-                smart_results = self.knowledge_base.smart_search(question, top_k=2, include_related_concepts=True)
-                if smart_results:
-                    known_concepts = []
-                    for result in smart_results:
-                        if 'matched_concepts' in result and result['matched_concepts']:
-                            known_concepts.extend(result['matched_concepts'][:2])
-                    known_concepts = list(set(known_concepts))[:5]  # Limit to 5 concepts
-                    if known_concepts:
-                        logger.info(f"🎯 Knowledge gap context: User knows {known_concepts}")
+                # Enhanced context injection for Llama
+                if "llama" in self.model_name.lower():
+                    # More comprehensive search for Llama
+                    smart_results = self.knowledge_base.smart_search(question, top_k=5, include_related_concepts=True)
+                    if smart_results:
+                        known_concepts = []
+                        for result in smart_results:
+                            if 'matched_concepts' in result and result['matched_concepts']:
+                                known_concepts.extend(result['matched_concepts'][:3])  # More concepts for Llama
+                        known_concepts = list(set(known_concepts))[:8]  # Higher limit for Llama
+                        if known_concepts:
+                            logger.info(f"🦙 Enhanced Llama context: User knows {known_concepts}")
+                else:
+                    # Standard lightweight search for other models
+                    smart_results = self.knowledge_base.smart_search(question, top_k=2, include_related_concepts=True)
+                    if smart_results:
+                        known_concepts = []
+                        for result in smart_results:
+                            if 'matched_concepts' in result and result['matched_concepts']:
+                                known_concepts.extend(result['matched_concepts'][:2])
+                        known_concepts = list(set(known_concepts))[:5]  # Standard limit
+                        if known_concepts:
+                            logger.info(f"🎯 Knowledge gap context: User knows {known_concepts}")
             except Exception as e:
                 logger.warning(f"⚠️ Knowledge gap detection failed: {e}")
         
         # Use adaptive prompt based on question analysis
         if adaptive_format:
-            prompt = self._create_adaptive_prompt(question, known_concepts)
+            if use_advanced_templates:
+                # Use new adaptive template system
+                base_prompt = self.adaptive_templates.create_prompt(question)
+                # Add knowledge context if available
+                if known_concepts:
+                    knowledge_context = f"\n\nBackground: User is already familiar with: {', '.join(known_concepts)}. Focus on new aspects and avoid redundant explanations of these concepts."
+                    base_prompt += knowledge_context
+                prompt = base_prompt
+            else:
+                # Use legacy adaptive prompting
+                prompt = self._create_adaptive_prompt(question, known_concepts)
         else:
             prompt = question
         
-        # Generation parameters - enhanced for longer detailed responses
-        temperature = temperature or config.model.temperature
-        max_tokens = max_tokens or 3072  # Increased for detailed explanations
+        # Model-specific generation parameters
+        if "llama" in self.model_name.lower():
+            # Enhanced settings for Llama to generate longer, more detailed responses
+            temperature = temperature or 0.6  # Slightly lower for more focused responses
+            max_tokens = max_tokens or 6144   # Much higher token limit for verbose responses
+            repeat_penalty = 1.03             # Lower penalty to allow detailed explanations
+            top_p = 0.95                      # Higher top_p for more diverse vocabulary
+            top_k = 60                        # Higher top_k for richer word choice
+        else:
+            # Standard settings for other models
+            temperature = temperature or config.model.temperature
+            max_tokens = max_tokens or 3072
+            repeat_penalty = 1.05
+            top_p = config.model.top_p
+            top_k = 40
         
         # Prepare request
         payload = {
@@ -122,14 +162,17 @@ class OllamaEducationalInference:
             "stream": False,
             "options": {
                 "temperature": temperature,
-                "top_p": config.model.top_p,
+                "top_p": top_p,
                 "num_predict": max_tokens,
-                "repeat_penalty": 1.05,  # Slight penalty to avoid repetition while allowing detailed explanations
-                "top_k": 40,  # Add top_k for better quality
+                "repeat_penalty": repeat_penalty,
+                "top_k": top_k,
             }
         }
         
         start_time = time.time()
+        
+        # Set timeout based on model - Llama needs more time for longer responses
+        timeout_duration = 600 if "llama" in self.model_name.lower() else 300  # 10 min for Llama, 5 min for others
         
         try:
             logger.info(f"🧠 Generating response for: {question[:50]}...")
@@ -137,7 +180,7 @@ class OllamaEducationalInference:
             response = requests.post(
                 self.api_url,
                 json=payload,
-                timeout=300  # 5 minute timeout for detailed responses
+                timeout=timeout_duration
             )
             
             if response.status_code == 200:
@@ -236,6 +279,62 @@ class OllamaEducationalInference:
             
         return base_instruction
     
+    def _get_llama_verbosity_instructions(self, question_type: str) -> str:
+        """Get specific verbosity instructions for Llama based on question type"""
+        
+        verbosity_templates = {
+            'comparison': """
+For COMPARISON responses:
+- Create detailed comparison tables with 5-7 dimensions
+- Provide 2-3 concrete examples for each item being compared
+- Include pros/cons with real-world scenarios
+- Add decision-making criteria and use-case recommendations
+- Discuss trade-offs in depth with quantitative examples where possible""",
+            
+            'summary': """
+For SUMMARY responses:
+- Start with a comprehensive executive summary (100-150 words)
+- Break into 4-6 detailed sections with subheadings
+- Include background/context section explaining why this topic matters
+- Provide multiple examples and case studies
+- Add implications and future directions section""",
+            
+            'process': """
+For PROCESS/HOW-TO responses:
+- Provide detailed step-by-step instructions with sub-steps
+- Include troubleshooting tips and common pitfalls for each step
+- Add alternative approaches and when to use them
+- Explain the reasoning behind each step
+- Include resource requirements and time estimates""",
+            
+            'concept': """
+For CONCEPT explanations:
+- Start with intuitive explanations using 2-3 different analogies
+- Provide formal definitions with detailed breakdowns of each component
+- Include historical development and key contributors
+- Give 3-4 progressively complex examples
+- Discuss variations, exceptions, and edge cases
+- Connect to broader theoretical frameworks""",
+            
+            'calculation': """
+For CALCULATION/MATH responses:
+- Show multiple solution methods when possible
+- Explain each step with detailed reasoning
+- Include verification/checking methods
+- Provide intuitive explanations of what each step accomplishes
+- Add real-world applications and interpretations of results""",
+            
+            'list': """
+For LIST responses:
+- Organize into clear categories with detailed explanations
+- Provide 2-3 examples for each item with context
+- Include criteria for classification
+- Add exceptions and edge cases
+- Discuss relationships between different items"""
+        }
+        
+        return verbosity_templates.get(question_type, verbosity_templates['concept'])
+    
     def _create_adaptive_prompt(self, question: str, known_concepts: List[str] = None) -> str:
         """Create adaptive prompt based on question analysis and lightweight knowledge context"""
         
@@ -257,10 +356,35 @@ class OllamaEducationalInference:
         if known_concepts:
             follow_up_context = f"\n\nAt the end, suggest 1-2 related topics to explore next that build on this knowledge while avoiding: {', '.join(known_concepts)}."
         
-        # Base prompt
-        base_prompt = f"""You are an expert tutor. Respond in the most effective format for the question type.
+        # Model-specific prompt enhancement
+        if "llama" in self.model_name.lower():
+            # Enhanced verbose prompt for Llama
+            verbosity_instructions = self._get_llama_verbosity_instructions(analysis['type'])
+            base_prompt = f"""You are a comprehensive educational expert. Your goal is to provide extremely detailed, thorough explanations that leave no stone unturned.
 
+RESPONSE REQUIREMENTS:
+- Write AT LEAST 800-1200 words
+- Include multiple detailed examples with step-by-step breakdowns
+- Explain the "why" behind every concept, not just the "what"
+- Add historical context, real-world applications, and connections to other fields
+- Use analogies and metaphors to make complex ideas accessible
+- Include potential misconceptions and how to avoid them
+
+{verbosity_instructions}
 {format_instructions}{knowledge_context}{follow_up_context}
+
+Question: {question}
+
+Provide an exceptionally comprehensive, detailed response that thoroughly explores all aspects of this topic:"""
+        else:
+            # Standard prompt for other models (including raw Gemma 3)
+            obsidian_latex_note = ""
+            if "gemma" in self.model_name.lower():
+                obsidian_latex_note = "\n\nIMPORTANT: When writing mathematical formulas, use proper LaTeX notation with $...$ for inline math and $$...$$ for display math so they render correctly in Obsidian."
+            
+            base_prompt = f"""You are an expert tutor. Respond in the most effective format for the question type.
+
+{format_instructions}{knowledge_context}{follow_up_context}{obsidian_latex_note}
 
 Question: {question}
 
