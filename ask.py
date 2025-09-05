@@ -69,10 +69,12 @@ def main():
         print("Example: python ask.py 'Explain eigenvalues' --quick --math")
         print("")
         print("Core Options:")
-        print("  --default   Use Gemma 3 without model selection")
-        print("  --raw       Raw Gemma 3 (no educational formatting)")
-        print("  --compare   Compare both models → choose preferred → save")
-        print("  --no-kb     Disable knowledge base (but keep educational formatting)")
+        print("  --research      Optimized research mode (ground rules + extended context + quick save)")
+        print("  --default       Use Gemma 3 without model selection")
+        print("  --raw           Raw Gemma 3 (no educational formatting)")
+        print("  --ground-rules  Use research-focused ground rules (recommended)")
+        print("  --compare       Compare both models → choose preferred → save")
+        print("  --no-kb         Disable knowledge base (but keep educational formatting)")
         print("")
         print("Workflow Options:")
         print("  --quick     Skip feedback loop, auto-save to Obsidian")
@@ -88,6 +90,7 @@ def main():
         print("  --general   Save to General folder")
         print("")
         print("Examples:")
+        print("  python ask.py 'Explain world models' --research")
         print("  python ask.py 'Explain eigenvalues' --quick --math")
         print("  python ask.py 'Compare ML algorithms' --compare --ai")
         print("  python ask.py 'Raw test' --raw --no-save")
@@ -101,6 +104,8 @@ def main():
     use_kb = True
     default_model = False
     raw_mode = False
+    ground_rules_mode = False
+    research_mode = False
     quick_mode = False
     no_save = False
     force_brief = False
@@ -127,6 +132,21 @@ def main():
         default_model = True  # Raw mode implies Gemma 3
         args.remove('--raw')
         print("🔥 Raw mode: Pure Gemma 3, no educational formatting")
+    
+    if '--research' in args:
+        research_mode = True
+        ground_rules_mode = True  # Research mode includes ground rules
+        default_model = True      # Research mode uses Gemma 3
+        quick_mode = True         # Research mode auto-saves (can be overridden by --no-save)
+        folder_shortcut = "AI-ML" # Default to AI-ML folder
+        args.remove('--research')
+        print("🔬 Research mode: Optimized for AI/ML research (ground rules + extended context + quick save)")
+    
+    if '--ground-rules' in args:
+        ground_rules_mode = True
+        default_model = True  # Ground rules mode implies Gemma 3
+        args.remove('--ground-rules')
+        print("🎯 Ground rules mode: Research-focused prompting")
     
     if '--quick' in args:
         quick_mode = True
@@ -161,11 +181,18 @@ def main():
         print("❌ Error: --raw and --compare cannot be used together")
         return
     
+    if raw_mode and (ground_rules_mode or research_mode):
+        print("❌ Error: --raw cannot be used with --ground-rules or --research")
+        return
+    
     if force_brief and force_detailed:
         print("❌ Error: --brief and --detailed cannot be used together")
         return
     
-    if quick_mode and no_save:
+    # Allow --no-save to override automatic quick_mode from research mode
+    if no_save and research_mode:
+        quick_mode = False  # Override research mode's automatic quick save
+    elif quick_mode and no_save:
         print("❌ Error: --quick and --no-save cannot be used together")
         return
     
@@ -182,10 +209,14 @@ def main():
     selected_model = None
     if compare_mode:
         print(f"⚔️ Model Comparison Mode: Gemma 3 vs Llama 3.1")
-    elif default_model or raw_mode:
+    elif default_model or raw_mode or ground_rules_mode or research_mode:
         selected_model = DEFAULT_MODEL
         if raw_mode:
             print(f"🔥 Raw mode with {selected_model}")
+        elif research_mode:
+            print(f"🔬 Research mode with {selected_model}")
+        elif ground_rules_mode:
+            print(f"🎯 Ground rules mode with {selected_model}")
         else:
             print(f"🎯 Default model: {selected_model}")
     else:
@@ -227,8 +258,8 @@ def main():
                            folder_shortcut, quick_mode)
     else:
         # Single model interaction loop
-        run_single_model_interaction(question, session_id, inference, raw_mode, quick_mode, 
-                                   no_save, force_brief, force_detailed, folder_shortcut)
+        run_single_model_interaction(question, session_id, inference, raw_mode, ground_rules_mode,
+                                   research_mode, quick_mode, no_save, force_brief, force_detailed, folder_shortcut)
 
 def collect_feedback(question, response, attempt):
     """Collect comprehensive feedback from user"""
@@ -621,8 +652,8 @@ def run_model_comparison(question, session_id, gemma_inference, llama_inference,
             else:
                 save_to_obsidian(question, preferred_response, comparison_feedback, preferred_model)
 
-def run_single_model_interaction(question, session_id, inference, raw_mode=False, quick_mode=False, 
-                                 no_save=False, force_brief=False, force_detailed=False, folder_shortcut=None):
+def run_single_model_interaction(question, session_id, inference, raw_mode=False, ground_rules_mode=False, 
+                                 research_mode=False, quick_mode=False, no_save=False, force_brief=False, force_detailed=False, folder_shortcut=None):
     """Run single model interaction loop with new workflow options"""
     attempt = 1
     feedback_history = []
@@ -648,6 +679,18 @@ def run_single_model_interaction(question, session_id, inference, raw_mode=False
                                                    adaptive_format=False,
                                                    include_knowledge_gap_context=False,
                                                    use_advanced_templates=False)
+            elif research_mode:
+                # Research mode: optimized research workflow  
+                result = inference.generate_response(question, 
+                                                   adaptive_format=False,
+                                                   include_knowledge_gap_context=True,
+                                                   research_mode=True)
+            elif ground_rules_mode:
+                # Ground rules mode: research-focused prompting
+                result = inference.generate_response(question, 
+                                                   adaptive_format=False,
+                                                   include_knowledge_gap_context=True,
+                                                   use_ground_rules=True)
             else:
                 # Normal educational mode
                 result = inference.generate_response(question, 

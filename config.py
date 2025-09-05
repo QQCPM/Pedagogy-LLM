@@ -8,7 +8,7 @@ class ModelConfig:
     """Model configuration settings"""
     model_name: str = "gemma3:12b"  # Using Gemma 3 12B via Ollama  
     cache_dir: str = "./models"
-    max_length: int = 2048
+    max_length: int = 6144
     temperature: float = 0.7
     top_p: float = 0.9
     do_sample: bool = True

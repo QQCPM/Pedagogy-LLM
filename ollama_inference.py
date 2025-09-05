@@ -91,6 +91,8 @@ class OllamaEducationalInference:
                          adaptive_format: bool = True,
                          include_knowledge_gap_context: bool = True,
                          use_advanced_templates: bool = True,
+                         use_ground_rules: bool = False,
+                         research_mode: bool = False,
                          complexity_override: str = None) -> str:
         """Generate adaptive educational response using Ollama"""
         
@@ -124,8 +126,12 @@ class OllamaEducationalInference:
             except Exception as e:
                 logger.warning(f"⚠️ Knowledge gap detection failed: {e}")
         
-        # Use adaptive prompt based on question analysis
-        if adaptive_format:
+        # Use adaptive prompt based on question analysis  
+        if research_mode or use_ground_rules:
+            # Use research-focused ground rules prompting
+            from ground_rules_prompt import create_ground_rules_prompt
+            prompt = create_ground_rules_prompt(question, known_concepts)
+        elif adaptive_format:
             if use_advanced_templates:
                 # Use new adaptive template system
                 if complexity_override:
@@ -161,12 +167,20 @@ class OllamaEducationalInference:
             top_p = 0.95                      # Higher top_p for more diverse vocabulary
             top_k = 60                        # Higher top_k for richer word choice
         else:
-            # Standard settings for other models
+            # Enhanced settings for Gemma 3 and other models
             temperature = temperature or config.model.temperature
-            max_tokens = max_tokens or 3072
-            repeat_penalty = 1.05
-            top_p = config.model.top_p
-            top_k = 40
+            
+            # Extended context for ground rules or research mode (research-focused responses)
+            if use_ground_rules or research_mode:
+                max_tokens = max_tokens or 8192   # Maximum context for detailed research notes
+                repeat_penalty = 1.02             # Lower penalty for comprehensive explanations
+                top_p = 0.9                       # Higher diversity for research depth
+                top_k = 50                        # More word choices for technical vocabulary
+            else:
+                max_tokens = max_tokens or 6144   # Extended standard length for richer responses
+                repeat_penalty = 1.04             # Slightly lower penalty for better flow
+                top_p = config.model.top_p
+                top_k = 45                        # Increased word choices for better vocabulary
         
         # Prepare request
         payload = {
