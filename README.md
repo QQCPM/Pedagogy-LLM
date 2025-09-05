@@ -1,6 +1,6 @@
 # Educational LLM Specialization Project
 
-🎯 **Goal**: Fine-tune Gemma 3 12B to provide structured, pedagogically effective explanations for technical subjects (math, AI/ML, physics).
+**Goal**: Fine-tune Gemma 3 12B to provide structured, pedagogically effective explanations for technical subjects (math, AI/ML, physics).
 
 ## Quick Start
 
@@ -46,7 +46,7 @@ python ask.py "question" --detailed  # Comprehensive answers
 
 ## Phase 1: Foundation (Current)
 
-### ✅ Completed
+### 1. Completed
 - [x] Environment setup and dependencies
 - [x] Project structure and configuration
 - [x] Gemma 3 12B inference script with memory optimization
@@ -54,7 +54,7 @@ python ask.py "question" --detailed  # Comprehensive answers
 - [x] Data loading and preprocessing utilities
 - [x] System monitoring and logging
 
-### 🎯 Your Tasks (Human)
+### 2. Your Tasks (Human)
 - [ ] Define your specific learning domains (Linear Algebra, World Models, etc.)
 - [ ] Create 50-question evaluation dataset manually
 - [ ] Test baseline Gemma responses and document weaknesses  
