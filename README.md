@@ -199,4 +199,4 @@ See **RESEARCH_REPORT.md** for the complete comparative analysis:
 
 ---
 
-**Research-validated AI assistant optimized for World Models and Causal AI learning!** 🧠🔬
+**Research-validated AI assistant optimized for World Models and Causal AI learning!**
