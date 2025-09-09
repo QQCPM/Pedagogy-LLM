@@ -1,6 +1,6 @@
 # Educational LLM Research: Adaptive Prompting vs Ground Rules Analysis
 
-🎯 **Goal**: Research and optimize prompting strategies for educational AI systems targeting research-level AI/ML content. This project compares adaptive template-based approaches, ground rules prompting, and raw model performance across Gemma 3 12B and Llama 3.1.
+**Goal**: Research and optimize prompting strategies for educational AI systems targeting research-level AI/ML content. This project compares adaptive template-based approaches, ground rules prompting, and raw model performance across Gemma 3 12B and Llama 3.1.
 
 ## Quick Start
 
@@ -47,7 +47,7 @@ python ask.py "question" --no-kb          # Without knowledge base integration
 
 ## Research Findings & Current Status
 
-### ✅ Completed Research
+### Completed Research
 - [x] **Comparative Analysis**: Adaptive templates vs Ground rules vs Raw baseline
 - [x] **Model Comparison**: Gemma 3 12B vs Llama 3.1 performance analysis
 - [x] **Context Optimization**: Extended 8K token context for comprehensive responses
@@ -55,14 +55,14 @@ python ask.py "question" --no-kb          # Without knowledge base integration
 - [x] **Knowledge Base Integration**: RAG system with concept graphs
 - [x] **Research Report**: Comprehensive analysis documented in RESEARCH_REPORT.md
 
-### 🔬 Key Research Results
+### Key Research Results
 - **Ground Rules Approach**: 2.7x longer responses, superior research-level depth
 - **Llama 3.1**: Better for verbose, comprehensive explanations (6K+ tokens)
 - **Gemma 3 12B**: More focused, efficient responses with excellent LaTeX support
 - **Extended Context**: 8K tokens enabled qualitatively better mathematical derivations
 - **Personalized Prompting**: Research-focused approach outperformed generic templates
 
-### 📊 Proven Results
+### Proven Results
 Comparison of different prompting strategies:
 
 **Raw Baseline (Gemma 3)**:
@@ -95,13 +95,13 @@ $$Av = \lambda v$$
 
 ## Key Features
 
-### 🧠 Prompting Strategies (Research-Validated)
+### Prompting Strategies (Research-Validated)
 - **Ground Rules Prompting**: Research-focused, flexible guidance (recommended)
 - **Adaptive Templates**: Dynamic structure based on question analysis
 - **Raw Baseline**: Direct model responses for comparison
 - **Model-Specific Optimization**: Llama (verbose) vs Gemma (focused) tuning
 
-### 🔬 Research Infrastructure
+### Research Infrastructure
 - **A/B Testing Framework**: Systematic strategy comparison
 - **Extended Context**: 8K tokens for comprehensive technical explanations
 - **Knowledge Base Integration**: RAG with concept graphs and Obsidian
