@@ -1,0 +1,254 @@
+[
+  {
+    "model": "gpt-oss:120b",
+    "model_name": "GPT-OSS 120B",
+    "approach": "raw",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745579",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "gpt-oss:120b",
+    "model_name": "GPT-OSS 120B",
+    "approach": "ground_rules",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745589",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "gpt-oss:20b",
+    "model_name": "GPT-OSS 20B",
+    "approach": "raw",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745593",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "gpt-oss:20b",
+    "model_name": "GPT-OSS 20B",
+    "approach": "ground_rules",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745596",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "llama3.3:70b",
+    "model_name": "Llama 3.3 70B",
+    "approach": "raw",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745600",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "llama3.3:70b",
+    "model_name": "Llama 3.3 70B",
+    "approach": "ground_rules",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745603",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "llama3.1:70b-instruct-q8_0",
+    "model_name": "Llama 3.1 70B",
+    "approach": "raw",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745606",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "llama3.1:70b-instruct-q8_0",
+    "model_name": "Llama 3.1 70B",
+    "approach": "ground_rules",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745609",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "deepseek-r1:70b",
+    "model_name": "DeepSeek R1 70B",
+    "approach": "raw",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745612",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "deepseek-r1:70b",
+    "model_name": "DeepSeek R1 70B",
+    "approach": "ground_rules",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745615",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "gemma3:27b",
+    "model_name": "Gemma 3 27B",
+    "approach": "raw",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745618",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "gemma3:27b",
+    "model_name": "Gemma 3 27B",
+    "approach": "ground_rules",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745621",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "gemma3:12b",
+    "model_name": "Gemma 3 12B",
+    "approach": "raw",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745624",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  },
+  {
+    "model": "gemma3:12b",
+    "model_name": "Gemma 3 12B",
+    "approach": "ground_rules",
+    "question_id": 1,
+    "question": "Explain quantum computing in 300 words",
+    "domain": "quantum_computing",
+    "response": "",
+    "metrics": {
+      "generation_time": 0,
+      "char_count": 0,
+      "word_count": 0,
+      "chars_per_second": 0
+    },
+    "timestamp": "2025-09-09T21:59:57.745626",
+    "error": true,
+    "error_message": "generate_response() got an unexpected keyword argument 'model'"
+  }
+]

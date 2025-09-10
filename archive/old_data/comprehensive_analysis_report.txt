@@ -1,0 +1,212 @@
+# Comprehensive Model Performance Analysis
+
+Generated: 2025-09-09 20:55:52
+
+## Executive Summary
+
+This analysis examines 28 evaluations across 2 models, covering 7 questions in 7 domains. The focus is on practical performance metrics including efficiency, response quality, and structural complexity.
+
+## Performance Rankings
+
+### Speed Performance
+1. GPT-OSS 20B (ground_rules): 287.3 chars/sec
+2. GPT-OSS 20B (raw): 251.4 chars/sec
+3. Llama 3.3 70B (ground_rules): 51.7 chars/sec
+4. Llama 3.3 70B (raw): 48.4 chars/sec
+
+### Response Comprehensiveness
+1. GPT-OSS 20B (ground_rules): 11658 characters average
+2. GPT-OSS 20B (raw): 6733 characters average
+3. Llama 3.3 70B (ground_rules): 6684 characters average
+4. Llama 3.3 70B (raw): 3840 characters average
+
+### Efficiency (Quality per Second)
+1. GPT-OSS 20B (ground_rules): 286.3 chars per second of generation
+2. GPT-OSS 20B (raw): 251.7 chars per second of generation
+3. Llama 3.3 70B (ground_rules): 51.7 chars per second of generation
+4. Llama 3.3 70B (raw): 47.9 chars per second of generation
+
+### Structural Complexity
+1. GPT-OSS 20B (ground_rules): 59.0 structural elements per response
+2. GPT-OSS 20B (raw): 35.3 structural elements per response
+3. Llama 3.3 70B (ground_rules): 23.4 structural elements per response
+4. Llama 3.3 70B (raw): 14.3 structural elements per response
+
+## Detailed Model Analysis
+
+### GPT-OSS 20B - Raw Mode
+
+**Performance Metrics:**
+- Generation Speed: 251.4 chars/sec
+- Average Response Length: 6733 characters
+- Time per Character: 0.004 seconds
+- Speed Consistency: 7.01
+- Length Consistency: 3.79
+
+**Response Complexity:**
+- Average Equations per Response: 4.7
+- Average Tables per Response: 13.4
+- Average Code Blocks per Response: 3.0
+- Average Sections per Response: 18.9
+- Technical Term Density: 0.021
+- Overall Structure Complexity: 35.3
+
+### GPT-OSS 20B - Ground_Rules Mode
+
+**Performance Metrics:**
+- Generation Speed: 287.3 chars/sec
+- Average Response Length: 11658 characters
+- Time per Character: 0.003 seconds
+- Speed Consistency: 14.63
+- Length Consistency: 6.99
+
+**Response Complexity:**
+- Average Equations per Response: 30.3
+- Average Tables per Response: 25.6
+- Average Code Blocks per Response: 4.0
+- Average Sections per Response: 29.4
+- Technical Term Density: 0.024
+- Overall Structure Complexity: 59.0
+
+### Llama 3.3 70B - Raw Mode
+
+**Performance Metrics:**
+- Generation Speed: 48.4 chars/sec
+- Average Response Length: 3840 characters
+- Time per Character: 0.021 seconds
+- Speed Consistency: 8.95
+- Length Consistency: 3.35
+
+**Response Complexity:**
+- Average Equations per Response: 25.0
+- Average Tables per Response: 0.0
+- Average Code Blocks per Response: 0.3
+- Average Sections per Response: 14.0
+- Technical Term Density: 0.034
+- Overall Structure Complexity: 14.3
+
+### Llama 3.3 70B - Ground_Rules Mode
+
+**Performance Metrics:**
+- Generation Speed: 51.7 chars/sec
+- Average Response Length: 6684 characters
+- Time per Character: 0.019 seconds
+- Speed Consistency: 12.90
+- Length Consistency: 4.66
+
+**Response Complexity:**
+- Average Equations per Response: 17.0
+- Average Tables per Response: 0.0
+- Average Code Blocks per Response: 2.6
+- Average Sections per Response: 20.9
+- Technical Term Density: 0.034
+- Overall Structure Complexity: 23.4
+
+## Approach Comparison: Raw vs Ground Rules
+
+**Raw Approach Performance:**
+- Average Length: 5286 characters
+- Average Speed: 149.9 chars/sec
+- Average Time: 53.4 seconds
+
+**Ground Rules Approach Performance:**
+- Average Length: 9171 characters
+- Average Speed: 169.5 chars/sec
+- Average Time: 85.0 seconds
+
+**Trade-off Analysis:**
+- Quality Improvement: 73.5% longer responses
+- Time Cost: 59.0% longer generation time
+- Efficiency Ratio: 1.2
+- Verdict: Good trade-off: quality improvement justifies time cost
+
+## Domain-Specific Performance
+
+### Deep Learning
+- Best Performer: GPT-OSS 20B (ground_rules)
+- Average Speed: 152.7 chars/sec
+- Average Length: 8894 characters
+- Performance Category: Moderate Speed, High Detail
+- Sample Size: 4 evaluations
+
+### Earth Science
+- Best Performer: GPT-OSS 20B (ground_rules)
+- Average Speed: 135.0 chars/sec
+- Average Length: 5660 characters
+- Performance Category: Moderate Speed, Moderate Detail
+- Sample Size: 4 evaluations
+
+### Scientific Method
+- Best Performer: GPT-OSS 20B (ground_rules)
+- Average Speed: 159.7 chars/sec
+- Average Length: 7940 characters
+- Performance Category: Moderate Speed, High Detail
+- Sample Size: 4 evaluations
+
+### Materials Science
+- Best Performer: GPT-OSS 20B (ground_rules)
+- Average Speed: 165.1 chars/sec
+- Average Length: 7436 characters
+- Performance Category: Moderate Speed, High Detail
+- Sample Size: 4 evaluations
+
+### Quantum Computing
+- Best Performer: GPT-OSS 20B (raw)
+- Average Speed: 166.7 chars/sec
+- Average Length: 6844 characters
+- Performance Category: Moderate Speed, High Detail
+- Sample Size: 4 evaluations
+
+### Numerical Methods
+- Best Performer: GPT-OSS 20B (ground_rules)
+- Average Speed: 163.8 chars/sec
+- Average Length: 7342 characters
+- Performance Category: Moderate Speed, High Detail
+- Sample Size: 4 evaluations
+
+### Machine Learning
+- Best Performer: GPT-OSS 20B (ground_rules)
+- Average Speed: 175.0 chars/sec
+- Average Length: 6484 characters
+- Performance Category: Moderate Speed, High Detail
+- Sample Size: 4 evaluations
+
+## Key Insights
+
+**Speed Champion:** GPT-OSS 20B in ground_rules mode delivers 287.3 chars/sec, making it the fastest option for real-time applications.
+
+**Most Comprehensive:** GPT-OSS 20B in ground_rules mode produces the longest responses (11658 characters average), ideal for detailed explanations.
+
+**Best Efficiency:** GPT-OSS 20B in ground_rules mode offers the best quality-to-speed ratio (286.3), balancing detail with performance.
+
+**Highest Complexity:** GPT-OSS 20B in ground_rules mode provides the most structured responses (59.0 elements per response), suitable for technical documentation.
+
+## Practical Recommendations
+
+**For Speed-Critical Applications:**
+Choose GPT-OSS 20B in ground_rules mode for maximum throughput.
+
+**For Educational Content:**
+Use GPT-OSS 20B in ground_rules mode for detailed explanations.
+
+**For Balanced Performance:**
+Deploy GPT-OSS 20B in ground_rules mode for optimal quality-speed balance.
+
+**For Technical Documentation:**
+Utilize GPT-OSS 20B in ground_rules mode for structured, technical responses.
+
+**Approach Recommendation:**
+The Ground Rules approach provides 73.5% longer responses with only 59.0% time cost increase. This trade-off is favorable for most educational applications.
+
+## Future Research Directions
+
+1. **Quality Scoring:** Implement automated content quality assessment
+2. **Domain Expansion:** Test performance across more specialized domains
+3. **Real-world Validation:** Deploy top performers in actual educational settings
+4. **Cost Analysis:** Evaluate computational resource requirements
+5. **User Preference Studies:** Gather feedback on response quality and usefulness
+
+---
+
+*Analysis based on 28 evaluations*
+*Data collection period: 2025-09-09T15:28:56.654427 to 2025-09-09T17:59:56.852951*

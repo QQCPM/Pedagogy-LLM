@@ -13,7 +13,7 @@ from ollama_inference import OllamaEducationalInference
 from config import config
 
 # UPDATE THIS PATH TO YOUR OBSIDIAN VAULT
-OBSIDIAN_VAULT = Path("/Users/quangnguyen/Downloads/hello")
+OBSIDIAN_VAULT = Path("/Users/tld/Documents/Obsidian LLM")
 
 # Folder structure for research notes
 FOLDERS = {

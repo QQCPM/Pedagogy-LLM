@@ -1,0 +1,128 @@
+# Comprehensive All Models Performance Analysis
+
+Generated: 2025-09-09 21:07:33
+
+## Executive Summary
+
+This analysis examines 28 evaluations across 2 models, testing both Raw and Ground Rules approaches. The evaluation covers multiple domains including Earth Science, Machine Learning, Quantum Computing, Deep Learning, Materials Science, and Numerical Methods.
+
+## Available Models Analysis
+
+### Model Overview
+
+**GPT-OSS 20B** (20B parameters (13GB))
+- Raw Mode: 251.4 chars/sec, 6733 chars avg
+- Ground Rules: 287.3 chars/sec, 11658 chars avg
+- Total Evaluations: 14
+
+**Llama 3.3 70B** (70B parameters (42GB))
+- Raw Mode: 48.4 chars/sec, 3840 chars avg
+- Ground Rules: 51.7 chars/sec, 6684 chars avg
+- Total Evaluations: 14
+
+## Performance Rankings
+
+### Speed Performance (chars/sec)
+1. **GPT-OSS 20B** (ground_rules): 287.3 chars/sec
+2. **GPT-OSS 20B** (raw): 251.4 chars/sec
+3. **Llama 3.3 70B** (ground_rules): 51.7 chars/sec
+4. **Llama 3.3 70B** (raw): 48.4 chars/sec
+
+### Response Comprehensiveness (average length)
+1. **GPT-OSS 20B** (ground_rules): 11658 characters
+2. **GPT-OSS 20B** (raw): 6733 characters
+3. **Llama 3.3 70B** (ground_rules): 6684 characters
+4. **Llama 3.3 70B** (raw): 3840 characters
+
+### Efficiency (chars per second of generation)
+1. **GPT-OSS 20B** (ground_rules): 286.3 chars/gen_sec
+2. **GPT-OSS 20B** (raw): 251.7 chars/gen_sec
+3. **Llama 3.3 70B** (ground_rules): 51.7 chars/gen_sec
+4. **Llama 3.3 70B** (raw): 47.9 chars/gen_sec
+
+## Model Size vs Performance Analysis
+
+### Large Models (70B+)
+
+- Average Speed: 50.0 chars/sec
+- Average Response Length: 5262 characters
+- Fastest: Llama 3.3 70B (ground_rules) - 51.7 chars/sec
+- Most Comprehensive: Llama 3.3 70B (ground_rules) - 6684 chars
+
+### Medium Models (20-30B)
+
+- Average Speed: 269.4 chars/sec
+- Average Response Length: 9196 characters
+- Fastest: GPT-OSS 20B (ground_rules) - 287.3 chars/sec
+- Most Comprehensive: GPT-OSS 20B (ground_rules) - 11658 chars
+
+### Small Models (<20B)
+
+## Raw vs Ground Rules Comparison
+
+**Raw Approach (Average across all models):**
+- Speed: 149.9 chars/sec
+- Length: 5286 characters
+- Time: 53.4 seconds
+
+**Ground Rules Approach (Average across all models):**
+- Speed: 169.5 chars/sec
+- Length: 9171 characters
+- Time: 85.0 seconds
+
+**Overall Impact of Ground Rules:**
+- Response Length: 73.5% increase
+- Generation Time: 59.0% increase
+- Speed Change: 13.0% change
+
+## Key Insights
+
+**Speed Champion:** GPT-OSS 20B in ground_rules mode achieves 287.3 chars/sec
+
+**Most Comprehensive:** GPT-OSS 20B in ground_rules mode produces 11658 character responses
+
+**Best Efficiency:** GPT-OSS 20B in ground_rules mode with 286.3 chars per generation second
+
+## Model-Specific Performance Insights
+
+### GPT-OSS 20B
+
+- **Raw Performance:** 251.4 chars/sec, 6733 chars
+- **Ground Rules Performance:** 287.3 chars/sec, 11658 chars
+- **Speed Change:** +14.3%
+- **Length Improvement:** +73.1%
+- **Characteristics:** Very Fast, Highly Detailed
+
+### Llama 3.3 70B
+
+- **Raw Performance:** 48.4 chars/sec, 3840 chars
+- **Ground Rules Performance:** 51.7 chars/sec, 6684 chars
+- **Speed Change:** +6.7%
+- **Length Improvement:** +74.1%
+- **Characteristics:** Moderate, Detailed
+
+## Practical Recommendations
+
+### For Different Use Cases
+
+**Speed-Critical Applications:**
+- Primary: GPT-OSS 20B (ground_rules) - 287.3 chars/sec
+- Alternative: GPT-OSS 20B (raw) - 251.4 chars/sec
+
+**Comprehensive Educational Content:**
+- Primary: GPT-OSS 20B (ground_rules) - 11658 chars
+- Alternative: GPT-OSS 20B (raw) - 6733 chars
+
+**Balanced Performance:**
+- Primary: GPT-OSS 20B (ground_rules) - 286.3 efficiency score
+
+### Resource Considerations
+
+**For Limited Resources:**
+**For Maximum Performance:**
+- Llama 3.3 70B (ground_rules) provides 51.7 chars/sec with high resource usage
+
+---
+
+*Analysis based on 28 evaluations across 2 models*
+*Generated: 2025-09-09 21:07:33*
