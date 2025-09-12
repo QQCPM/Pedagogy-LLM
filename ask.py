@@ -24,10 +24,15 @@ FOLDERS = {
     "5": "General"
 }
 
-# Available models for selection (streamlined to 2 models)
+# Available models for selection (based on your evaluation results)
 AVAILABLE_MODELS = {
-    "1": {"name": "Gemma 3 12B", "model_id": "gemma3:12b", "description": "Your preferred model"},
-    "2": {"name": "Llama 3.1 8B", "model_id": "llama3.1:8b", "description": "Alternative perspective"}
+    "1": {"name": "Gemma 3 12B", "model_id": "gemma3:12b", "description": "Efficient, excellent LaTeX support (8GB)"},
+    "2": {"name": "GPT-OSS 20B", "model_id": "gpt-oss:20b", "description": "Speed champion, 285.1 chars/sec (13GB)"},
+    "3": {"name": "GPT-OSS 120B", "model_id": "gpt-oss:120b", "description": "Most comprehensive, 9,852 chars avg (65GB)"},
+    "4": {"name": "Llama 3.1 70B", "model_id": "llama3.1:70b", "description": "Large model, comprehensive (74GB)"},
+    "5": {"name": "Llama 3.3 70B", "model_id": "llama3.3:70b", "description": "Latest Llama, good performance (42GB)"},
+    "6": {"name": "DeepSeek R1 70B", "model_id": "deepseek-r1:70b", "description": "Reasoning specialist (42GB)"},
+    "7": {"name": "Gemma 3 27B", "model_id": "gemma3:27b", "description": "Larger Gemma variant (17GB)"}
 }
 
 # Default model for --default flag
@@ -58,10 +63,10 @@ def choose_model():
         print(f"  {key}. {model_info['name']} - {model_info['description']}")
     
     while True:
-        choice = input("\nSelect model (1-2): ").strip()
+        choice = input(f"\nSelect model (1-{len(AVAILABLE_MODELS)}): ").strip()
         if choice in AVAILABLE_MODELS:
             return AVAILABLE_MODELS[choice]['model_id']
-        print("Please enter 1 or 2")
+        print(f"Please enter a number between 1 and {len(AVAILABLE_MODELS)}")
 
 def main():
     if len(sys.argv) < 2:
@@ -136,7 +141,7 @@ def main():
     if '--research' in args:
         research_mode = True
         ground_rules_mode = True  # Research mode includes ground rules
-        default_model = True      # Research mode uses Gemma 3
+        # Removed: default_model = True  # Let user choose model in research mode
         quick_mode = True         # Research mode auto-saves (can be overridden by --no-save)
         folder_shortcut = "AI-ML" # Default to AI-ML folder
         args.remove('--research')
@@ -209,12 +214,14 @@ def main():
     selected_model = None
     if compare_mode:
         print(f"⚔️ Model Comparison Mode: Gemma 3 vs Llama 3.1")
-    elif default_model or raw_mode or ground_rules_mode or research_mode:
+    elif research_mode:
+        # Research mode gets interactive model selection (check this first!)
+        selected_model = choose_model()
+        print(f"🔬 Research mode with {selected_model}")
+    elif default_model or raw_mode or ground_rules_mode:
         selected_model = DEFAULT_MODEL
         if raw_mode:
             print(f"🔥 Raw mode with {selected_model}")
-        elif research_mode:
-            print(f"🔬 Research mode with {selected_model}")
         elif ground_rules_mode:
             print(f"🎯 Ground rules mode with {selected_model}")
         else:
